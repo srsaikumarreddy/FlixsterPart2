@@ -1,6 +1,9 @@
  package com.codepath.saikumar.flixster.adapters;
 
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Context;
+import android.content.SyncStatusObserver;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.codepath.saikumar.flixster.models.Movie;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketOption;
 import java.util.List;
 
 public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>{
@@ -63,7 +67,16 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getOverview());
-            Glide.with(context).load(movie.getPosterPath()).placeholder(R.drawable.ic_launcher_background).into(ivPoster);
+            String imageUrl;
+            if(context.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE){
+                //System.out.println("landscape");
+                imageUrl=movie.getBackdropPath();
+            }
+            else
+            { //System.out.println("portrait");
+                imageUrl=movie.getPosterPath();
+            }
+            Glide.with(context).load(imageUrl).placeholder(R.drawable.ic_launcher_background).into(ivPoster);
         }
     }
 
